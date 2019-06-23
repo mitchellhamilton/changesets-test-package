@@ -17,10 +17,14 @@ Toolkit.run(async tools => {
   }
 
   let cmd = await spawn("git", ["merge-base", "changeset-release", "master"]);
-  const divergedAt = cmd.stdout.trim();
+  const divergedAt = cmd.stdout.toString("utf8").trim();
 
-  await spawn("git", ["diff", "--name-only", `${divergedAt}...master`]);
-  const files = cmd.stdout.trim();
+  let diffOutput = await spawn("git", [
+    "diff",
+    "--name-only",
+    `${divergedAt}...master`
+  ]);
+  const files = diffOutput.stdout.toString("uf8").trim();
   if (files.includes(".changeset")) {
     await spawn("yarn");
     await spawn("yarn", ["changeset", "bump"]);
