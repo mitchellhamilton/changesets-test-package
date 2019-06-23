@@ -35,13 +35,19 @@ Toolkit.run(async tools => {
     await spawn("yarn");
     await spawn("yarn", ["changeset", "bump"]);
     await spawn("git", ["add", "."]);
-    await spawn("git", ["config", "--global", "user.name", "mitchellhamilton"]);
+    await spawn("git", [
+      "config",
+      "--global",
+      "user.name",
+      `"${process.env.GITHUB_ACTOR}"`
+    ]);
     await spawn("git", [
       "config",
       "--global",
       "user.email",
-      "mitchell@hamil.town"
+      `"${process.env.GITHUB_ACTOR}@users.noreply.github.com"`
     ]);
+
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
     console.log("committed the things");
   } else {
