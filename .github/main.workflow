@@ -1,6 +1,6 @@
 workflow "Create bump branch" {
   on = "push"
-  resolves = ["https://github.com/nuxt/actions-yarn"]
+  resolves = ["yarn"]
 }
 
 action "Filters for GitHub Actions" {
@@ -8,7 +8,13 @@ action "Filters for GitHub Actions" {
   args = "branch master"
 }
 
-action "https://github.com/nuxt/actions-yarn" {
+action "Node Thing" {
+  needs = "yarn"
+  uses = "../filter-action"
+  args = ""
+}
+
+action "yarn" {
   uses = "nuxt/actions-yarn@97f98f200b7fd42a001f88e7bdfc14d64d695ab2"
   needs = ["Filters for GitHub Actions"]
   args = "install"
