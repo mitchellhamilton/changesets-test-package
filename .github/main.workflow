@@ -1,6 +1,6 @@
 workflow "Create bump branch" {
   on = "push"
-  resolves = ["yarn"]
+  resolves = ["Node Thing"]
 }
 
 action "Filters for GitHub Actions" {
@@ -9,7 +9,7 @@ action "Filters for GitHub Actions" {
 }
 
 action "Node Thing" {
-  needs = "yarn"
+  needs = ["yarn"]
   uses = "../filter-action"
   args = ""
 }
