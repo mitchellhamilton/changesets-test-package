@@ -11,21 +11,27 @@ Toolkit.run(async tools => {
     "checkout",
     "changeset-release"
   ]);
-  if (stderr) {
+  let isCreatingChangesetReleaseBranch = !!stderr;
+  if (isCreatingChangesetReleaseBranch) {
     console.log("creating changeset-release branch");
     await spawn("git", ["checkout", "-b", "changeset-release"]);
   }
 
-  let cmd = await spawn("git", ["merge-base", "changeset-release", "master"]);
-  const divergedAt = cmd.stdout.toString("utf8").trim();
+  let shouldBump = isCreatingChangesetReleaseBranch;
 
-  let diffOutput = await spawn("git", [
-    "diff",
-    "--name-only",
-    `${divergedAt}...master`
-  ]);
-  const files = diffOutput.stdout.toString("uf8").trim();
-  if (files.includes(".changeset")) {
+  if (!shouldBump) {
+    let cmd = await spawn("git", ["merge-base", "changeset-release", "master"]);
+    const divergedAt = cmd.stdout.toString("utf8").trim();
+
+    let diffOutput = await spawn("git", [
+      "diff",
+      "--name-only",
+      `${divergedAt}...master`
+    ]);
+    const files = diffOutput.stdout.toString("uf8").trim();
+    shouldBump = files.includes(".changeset");
+  }
+  if (shouldBump) {
     await spawn("yarn");
     await spawn("yarn", ["changeset", "bump"]);
     await spawn("git", ["add", "."]);
