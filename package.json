@@ -1,0 +1,10 @@
+{
+  "name": "@mitchellhamilton/changesets-test-package",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mitchellhamilton/changesets-test-package",
+  "license": "MIT",
+  "devDependencies": {
+    "@changesets/cli": "^1.2.0"
+  }
+}
