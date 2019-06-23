@@ -8,7 +8,7 @@ Toolkit.run(async tools => {
     ["checkout", "changeset-release-branch"],
     { cwd: tools.workspace }
   );
-  console.log(stdout);
-  console.log(stderr);
+  console.log(stdout.toString("utf8"));
+  console.log(stderr.toString("utf8"));
   tools.exit.neutral("No new changesets");
 });
