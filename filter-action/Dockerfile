@@ -21,6 +21,9 @@ LABEL "com.github.actions.color"="purple"
 # Copy the package.json and package-lock.json
 COPY package*.json ./
 
+
+RUN apk add --no-cache git openssh
+
 # Install dependencies
 RUN npm ci
 
