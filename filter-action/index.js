@@ -16,7 +16,7 @@ Toolkit.run(async tools => {
     await spawn("git", ["checkout", "-b", "changeset-release"]);
   }
 
-  let cmd = await spawnGit(["merge-base", "changeset-release", "master"]);
+  let cmd = await spawn("git", ["merge-base", "changeset-release", "master"]);
   const divergedAt = cmd.stdout.trim();
 
   await spawn("git", ["diff", "--name-only", `${divergedAt}...master`]);
