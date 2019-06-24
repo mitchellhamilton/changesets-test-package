@@ -56,7 +56,7 @@ Toolkit.run(async tools => {
 
     await fs.writeFile(
       `${process.env.HOME}/.netrc`,
-      `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword${
+      `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword ${
         process.env.GITHUB_TOKEN
       }`
     );
