@@ -13,7 +13,7 @@ Toolkit.run(async tools => {
 
   let filesInChangesetDir = fs.readdirSync(`${tools.workspace}/.changeset`);
   console.log(filesInChangesetDir);
-  let hasChangesets = filesInChangesetDir.filter(
+  let hasChangesets = filesInChangesetDir.some(
     x => x !== "config.js" && x !== "README.md"
   );
 
