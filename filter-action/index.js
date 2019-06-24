@@ -76,7 +76,7 @@ Toolkit.run(async tools => {
     let searchResult = await tools.github.search.issuesAndPullRequests({
       q: searchQuery
     });
-    console.log(JSON.stringify(searchQuery, null, 2));
+    console.log(JSON.stringify(searchResult.data, null, 2));
     if (searchResult.data.items.length === 0) {
       console.log("creating pull request");
       await tools.github.pulls.create({
