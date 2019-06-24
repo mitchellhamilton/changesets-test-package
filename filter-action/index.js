@@ -7,8 +7,8 @@ const _spawn = require("spawndamnit");
 Toolkit.run(async tools => {
   let spawn = (command, args) => {
     let child = _spawn(command, args, { cwd: tools.workspace });
-    child.on("stdout", data => console.log(data.toString()));
-    child.on("stderr", data => console.error(data.toString()));
+    child.on("stdout", data => console.log("stdout: " + data.toString()));
+    child.on("stderr", data => console.error("stderr: " + data.toString()));
     return child;
   };
 
@@ -16,8 +16,9 @@ Toolkit.run(async tools => {
     "checkout",
     "changeset-release"
   ]);
-  console.log("checkout stderr output: " + JSON.stringify(stderr.toString()));
-  let isCreatingChangesetReleaseBranch = !!stderr.toString();
+  let isCreatingChangesetReleaseBranch = !stderr
+    .toString()
+    .includes("Switched to a new branch 'changeset-release'");
   if (isCreatingChangesetReleaseBranch) {
     console.log("creating changeset-release branch");
     await spawn("git", ["checkout", "-b", "changeset-release"]);
