@@ -34,6 +34,7 @@ Toolkit.run(async tools => {
     shouldBump = files.includes(".changeset");
   }
   if (shouldBump) {
+    await spawn("git", ["reset", "--hard", "master"]);
     await spawn("yarn");
     await spawn("yarn", ["changeset", "bump"]);
     await spawn("git", ["add", "."]);
@@ -58,15 +59,21 @@ Toolkit.run(async tools => {
       }`
     );
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
-    await spawn("git", ["push", "origin", "changeset-release"]);
+    await spawn("git", ["push", "origin", "changeset-release", "--force"]);
     let searchResult = await tools.github.search.issuesAndPullRequests({
       q: `repo:${
         process.env.GITHUB_REPOSITORY
       }+state:open+head:changeset-relase+base:master`
     });
-    console.log(JSON.stringify(searchResult.data), null, 2);
+    if (searchResult.data.items.length === 0) {
+      await tools.github.pulls.create({
+        base: "master",
+        head: "changeset-release",
+        ...tools.context.repo,
+        title: "Bump Packages"
+      });
+    }
 
-    // await tools.github.pulls.create({});
     console.log("committed the things");
   } else {
     tools.exit.neutral("No new changesets");
