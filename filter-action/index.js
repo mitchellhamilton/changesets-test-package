@@ -1,5 +1,9 @@
 const { Toolkit } = require("actions-toolkit");
+const fs = require("fs");
+const { promisify } = require("util");
 const _spawn = require("spawndamnit");
+
+let writeFile = promisify(fs.writeFile);
 
 // Run your GitHub Action!
 Toolkit.run(async tools => {
@@ -49,6 +53,16 @@ Toolkit.run(async tools => {
     ]);
 
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
+
+    await fs.writeFile(
+      `${process.env.HOME}/.netrc`,
+      `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword${
+        process.env.GITHUB_TOKEN
+      }`
+    );
+    await spawn("git", ["commit", "-m", '"Bump Packages"']);
+    await spawn("git", ["push", "origin", "changeset-release"]);
+
     console.log("committed the things");
   } else {
     tools.exit.neutral("No new changesets");
