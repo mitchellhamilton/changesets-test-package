@@ -13,7 +13,7 @@ Toolkit.run(async tools => {
     "checkout",
     "changeset-release"
   ]);
-  let isCreatingChangesetReleaseBranch = !!stderr;
+  let isCreatingChangesetReleaseBranch = !!stderr.toString();
   if (isCreatingChangesetReleaseBranch) {
     console.log("creating changeset-release branch");
     await spawn("git", ["checkout", "-b", "changeset-release"]);
