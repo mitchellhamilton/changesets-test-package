@@ -6,7 +6,10 @@ const _spawn = require("spawndamnit");
 // Run your GitHub Action!
 Toolkit.run(async tools => {
   let spawn = (command, args) => {
-    return _spawn(command, args, { cwd: tools.workspace });
+    let child = _spawn(command, args, { cwd: tools.workspace });
+    child.on("stdout", data => console.log(data.toString()));
+    child.on("stderr", data => console.error(data.toString()));
+    return child;
   };
 
   let { stdout, stderr } = await spawn("git", [
