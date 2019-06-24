@@ -5,7 +5,7 @@ workflow "Create bump branch" {
 
 
 action "stuff" {
-  uses = "mitchellhamilton/changesets-test-package/filter-action@master"
+  uses = "mitchellhamilton/changesets-test-package/action@master"
   secrets = ["GITHUB_TOKEN"]
   args = ""
 }
