@@ -36,7 +36,7 @@ Toolkit.run(async tools => {
       "--name-only",
       `${divergedAt}...master`
     ]);
-    const files = diffOutput.stdout.toString("uf8").trim();
+    const files = diffOutput.stdout.toString("utf8").trim();
     shouldBump = files.includes(".changeset");
     console.log("checked if new changesets should be added " + shouldBump);
   }
