@@ -16,6 +16,7 @@ Toolkit.run(async tools => {
     "checkout",
     "changeset-release"
   ]);
+  console.log("checkout stderr output: " + JSON.stringify(stderr.toString()));
   let isCreatingChangesetReleaseBranch = !!stderr.toString();
   if (isCreatingChangesetReleaseBranch) {
     console.log("creating changeset-release branch");
