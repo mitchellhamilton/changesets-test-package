@@ -45,12 +45,17 @@ Toolkit.run(async tools => {
     console.log("adding changes to git");
     await spawn("git", ["add", "."]);
     console.log("setting git user");
-    await spawn("git", ["config", "--global", "user.name", `"github-actions"`]);
+    await spawn("git", [
+      "config",
+      "--global",
+      "user.name",
+      `"${process.env.GITHUB_ACTOR}"`
+    ]);
     await spawn("git", [
       "config",
       "--global",
       "user.email",
-      `"github-actions@users.noreply.github.com"`
+      `"${process.env.GITHUB_ACTOR}@users.noreply.github.com"`
     ]);
     console.log("setting GitHub credentials");
     fs.writeFileSync(
