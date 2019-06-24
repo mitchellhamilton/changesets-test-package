@@ -71,9 +71,9 @@ Toolkit.run(async tools => {
     console.log("searching for pull requests");
     let searchQuery = `repo:${
       process.env.GITHUB_REPOSITORY
-    }+state:open+head:changeset-relase+base:master`;
+    }+state:open+head:changeset-release+base:master`;
     console.log("search query: " + searchQuery);
-    let searchResult = await tools.github.search({
+    let searchResult = await tools.github.search.issuesAndPullRequests({
       q: searchQuery
     });
     console.log(JSON.stringify(searchResult.data, null, 2));
