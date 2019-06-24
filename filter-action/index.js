@@ -3,8 +3,6 @@ const fs = require("fs");
 const { promisify } = require("util");
 const _spawn = require("spawndamnit");
 
-let writeFile = promisify(fs.writeFile);
-
 // Run your GitHub Action!
 Toolkit.run(async tools => {
   let spawn = (command, args) => {
@@ -54,7 +52,7 @@ Toolkit.run(async tools => {
 
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
 
-    await fs.writeFile(
+    fs.writeFileSync(
       `${process.env.HOME}/.netrc`,
       `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword ${
         process.env.GITHUB_TOKEN
