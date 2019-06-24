@@ -11,9 +11,11 @@ Toolkit.run(async tools => {
     );
   }
 
-  let hasChangesets = fs
-    .readdirSync(`${tools.workspace}/.changeset`)
-    .filter(x => x !== "config.js" && x !== "README.md");
+  let filesInChangesetDir = fs.readdirSync(`${tools.workspace}/.changeset`);
+  console.log(filesInChangesetDir);
+  let hasChangesets = filesInChangesetDir.filter(
+    x => x !== "config.js" && x !== "README.md"
+  );
 
   if (!hasChangesets) {
     return tools.exit.neutral("No changesets found");
