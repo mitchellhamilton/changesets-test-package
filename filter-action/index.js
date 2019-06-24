@@ -51,7 +51,6 @@ Toolkit.run(async tools => {
     ]);
 
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
-
     fs.writeFileSync(
       `${process.env.HOME}/.netrc`,
       `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword ${
@@ -60,7 +59,14 @@ Toolkit.run(async tools => {
     );
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
     await spawn("git", ["push", "origin", "changeset-release"]);
+    let searchResult = await tools.github.search.issuesAndPullRequests({
+      q: `repo:${
+        process.env.GITHUB_REPOSITORY
+      }+state:open+head:changeset-relase+base:master`
+    });
+    console.log(JSON.stringify(searchResult.data), null, 2);
 
+    // await tools.github.pulls.create({});
     console.log("committed the things");
   } else {
     tools.exit.neutral("No new changesets");
