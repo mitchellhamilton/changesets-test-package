@@ -22,6 +22,7 @@ Toolkit.run(async tools => {
   let shouldBump = isCreatingChangesetReleaseBranch;
 
   if (!shouldBump) {
+    console.log("checking if new changesets should be added");
     let cmd = await spawn("git", ["merge-base", "changeset-release", "master"]);
     const divergedAt = cmd.stdout.toString("utf8").trim();
 
@@ -32,49 +33,54 @@ Toolkit.run(async tools => {
     ]);
     const files = diffOutput.stdout.toString("uf8").trim();
     shouldBump = files.includes(".changeset");
+    console.log("checked if new changesets should be added " + shouldBump);
   }
   if (shouldBump) {
+    console.log("reseting branch to master");
     await spawn("git", ["reset", "--hard", "master"]);
+    console.log("installing packages");
     await spawn("yarn");
+    console.log("bumping packages");
     await spawn("yarn", ["changeset", "bump"]);
+    console.log("adding changes to git");
     await spawn("git", ["add", "."]);
-    await spawn("git", [
-      "config",
-      "--global",
-      "user.name",
-      `"${process.env.GITHUB_ACTOR}"`
-    ]);
+    console.log("setting git user");
+    await spawn("git", ["config", "--global", "user.name", `"github-actions"`]);
     await spawn("git", [
       "config",
       "--global",
       "user.email",
-      `"${process.env.GITHUB_ACTOR}@users.noreply.github.com"`
+      `"github-actions@users.noreply.github.com"`
     ]);
-
-    await spawn("git", ["commit", "-m", '"Bump Packages"']);
+    console.log("setting GitHub credentials");
     fs.writeFileSync(
       `${process.env.HOME}/.netrc`,
       `machine github.com\nlogin ${process.env.GITHUB_ACTOR}\npassword ${
         process.env.GITHUB_TOKEN
       }`
     );
+    console.log("committing changes");
     await spawn("git", ["commit", "-m", '"Bump Packages"']);
+    console.log("pushing to remote");
     await spawn("git", ["push", "origin", "changeset-release", "--force"]);
+    console.log("searching for pull requests");
     let searchResult = await tools.github.search.issuesAndPullRequests({
       q: `repo:${
         process.env.GITHUB_REPOSITORY
       }+state:open+head:changeset-relase+base:master`
     });
+
     if (searchResult.data.items.length === 0) {
+      console.log("creating pull request");
       await tools.github.pulls.create({
         base: "master",
         head: "changeset-release",
         ...tools.context.repo,
         title: "Bump Packages"
       });
+    } else {
+      console.log("pull request found");
     }
-
-    console.log("committed the things");
   } else {
     tools.exit.neutral("No new changesets");
   }
