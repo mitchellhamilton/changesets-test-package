@@ -49,13 +49,13 @@ Toolkit.run(async tools => {
       "config",
       "--global",
       "user.name",
-      `"${process.env.GITHUB_ACTOR}"`
+      `"github-actions[bot]"`
     ]);
     await spawn("git", [
       "config",
       "--global",
       "user.email",
-      `"${process.env.GITHUB_ACTOR}@users.noreply.github.com"`
+      `"github-actions[bot]@users.noreply.github.com"`
     ]);
     console.log("setting GitHub credentials");
     fs.writeFileSync(
