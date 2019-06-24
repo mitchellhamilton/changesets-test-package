@@ -84,7 +84,7 @@ Toolkit.run(async tools => {
       }`
     );
     console.log("committing changes");
-    await spawn("git", ["commit", "-m", '"Bump Packages"']);
+    await spawn("git", ["commit", "-m", "Bump Packages"]);
     console.log("pushing to remote");
     await spawn("git", ["push", "origin", "changeset-release", "--force"]);
     console.log("searching for pull requests");
