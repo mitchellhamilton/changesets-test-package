@@ -5,7 +5,19 @@ const _spawn = require("spawndamnit");
 
 // Run your GitHub Action!
 Toolkit.run(async tools => {
-  console.log("ref " + process.env.GITHUB_REF);
+  if (process.env.GITHUB_REF !== "refs/heads/master") {
+    return tools.exit.neutral(
+      "Not on master, on ref: " + process.env.GITHUB_REF
+    );
+  }
+
+  let hasChangesets = fs
+    .readdirSync(`${tools.workspace}/.changeset`)
+    .filter(x => x !== "config.js" && x !== "README.md");
+
+  if (!hasChangesets) {
+    return tools.exit.neutral("No changesets found");
+  }
 
   let spawn = (command, args) => {
     let child = _spawn(command, args, { cwd: tools.workspace });
