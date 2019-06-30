@@ -1,5 +1,11 @@
 # @mitchellhamilton/changesets-test-package
 
+## 4.0.0
+
+### Major Changes
+
+- 089949f: Something
+
 ## 3.0.0
 
 ### Major Changes
