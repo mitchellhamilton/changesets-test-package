@@ -1,6 +1,13 @@
 # @mitchellhamilton/changesets-test-package
 
+## 3.0.0
+
+### Major Changes
+
+- 51a00e0: Some summary
+
 ## 2.0.0
+
 ### Major Changes
 
 - e00e65b: Another summary
