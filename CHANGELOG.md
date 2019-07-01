@@ -1,5 +1,11 @@
 # @mitchellhamilton/changesets-test-package
 
+## 7.0.0
+
+### Major Changes
+
+- c4111cc: Add changeset
+
 ## 6.0.0
 
 ### Major Changes

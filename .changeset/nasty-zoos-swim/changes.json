@@ -1,6 +1,0 @@
-{
-  "releases": [
-    { "name": "@mitchellhamilton/changesets-test-package", "type": "major" }
-  ],
-  "dependents": []
-}
