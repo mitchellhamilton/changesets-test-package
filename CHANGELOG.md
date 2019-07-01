@@ -1,5 +1,11 @@
 # @mitchellhamilton/changesets-test-package
 
+## 6.0.0
+
+### Major Changes
+
+- 72db0c2: something
+
 ## 5.0.0
 
 ### Major Changes
