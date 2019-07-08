@@ -65,7 +65,7 @@ let spawn = (command, args) => {
       "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
     );
 
-    // await spawn("yarn", ["release"]);
+    await spawn("yarn", ["release"]);
 
     await spawn("git", ["push", "--follow-tags", "gh-https", "master"]);
 
@@ -103,8 +103,6 @@ let spawn = (command, args) => {
   if (shouldBump) {
     console.log("reseting branch to master");
     await spawn("git", ["reset", "--hard", "master"]);
-    console.log("installing packages");
-    await spawn("yarn");
     console.log("bumping packages");
     await spawn("yarn", ["changeset", "bump"]);
     console.log("adding changes to git");
