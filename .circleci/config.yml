@@ -21,8 +21,8 @@ jobs:
 workflows:
   version: 2
   release:
-    filters:
-      branches:
-        only: master
     jobs:
-      - release
+      - release:
+          filters:
+            branches:
+              only: master
