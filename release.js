@@ -15,7 +15,7 @@ let spawn = (command, args) => {
     process.env.CIRCLE_PROJECT_REPONAME
   }`;
   let ghUsername = process.env.GITHUB_ACTOR;
-  let ghAuthToken = process.env.GITHUB_AUTH;
+  let ghAuthToken = process.env.GITHUB_TOKEN;
   let octokit = new Octokit({
     auth: { username: ghUsername, password: ghAuthToken }
   });
