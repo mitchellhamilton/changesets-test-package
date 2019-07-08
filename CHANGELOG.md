@@ -1,5 +1,11 @@
 # @mitchellhamilton/changesets-test-package
 
+## 8.0.0
+
+### Major Changes
+
+- cd75ec9: thing
+
 ## 7.0.0
 
 ### Major Changes
