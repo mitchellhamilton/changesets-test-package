@@ -3,8 +3,6 @@ const { promisify } = require("util");
 const Octokit = require("@octokit/rest");
 const _spawn = require("spawndamnit");
 
-let octokit = new Octokit({ auth: "" });
-
 let spawn = (command, args) => {
   let child = _spawn(command, args);
   child.on("stdout", data => console.log("stdout: " + data.toString()));
@@ -18,18 +16,27 @@ let spawn = (command, args) => {
   }`;
   let ghUsername = process.env.GITHUB_ACTOR;
   let ghAuthToken = process.env.GITHUB_AUTH;
+  let octokit = new Octokit({
+    auth: { username: ghUsername, password: ghAuthToken }
+  });
+
   if (process.env.CIRCLE_BRANCH !== "master") {
     return console.log(
       "Not on master, on branch: " + process.env.CIRCLE_BRANCH
     );
   }
 
+  await fs.writeFile(
+    "~/.npmrc",
+    "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
+  );
+
   // await spawn("yarn", ["release"]);
 
   // await spawn("git", ["push", "--follow-tags"]);
 
   let hasChangesets = fs
-    .readdirSync(`${tools.workspace}/.changeset`)
+    .readdirSync(`${process.cwd()}/.changeset`)
     .some(x => x !== "config.js" && x !== "README.md");
   if (!hasChangesets) {
     return console.log("No changesets found");
@@ -101,8 +108,9 @@ let spawn = (command, args) => {
       await octokit.pulls.create({
         base: "master",
         head: "changeset-release",
-        ...tools.context.repo,
-        title: "Bump Packages"
+        title: "Bump Packages",
+        owner: process.env.CIRCLE_PROJECT_USERNAME,
+        repo: process.env.CIRCLE_PROJECT_REPONAME
       });
     } else {
       console.log("pull request found");
