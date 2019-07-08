@@ -36,8 +36,8 @@ let spawn = (command, args) => {
   ]);
   await spawn("git", [
     "remote",
-    "set-url",
-    "origin",
+    "add",
+    "gh-https",
     `https://github.com/${repo}`
   ]);
 
@@ -61,7 +61,7 @@ let spawn = (command, args) => {
 
     // await spawn("yarn", ["release"]);
 
-    // await spawn("git", ["push", "--follow-tags"]);
+    await spawn("git", ["push", "--follow-tags", "gh-https", "master"]);
 
     return;
   }
@@ -106,7 +106,7 @@ let spawn = (command, args) => {
     console.log("committing changes");
     await spawn("git", ["commit", "-m", "Bump Packages"]);
     console.log("pushing to remote");
-    await spawn("git", ["push", "origin", "changeset-release", "--force"]);
+    await spawn("git", ["push", "gh-https", "changeset-release", "--force"]);
     console.log("searching for pull requests");
     let searchQuery = `repo:${repo}+state:open+head:changeset-release+base:master`;
     console.log("search query: " + searchQuery);
