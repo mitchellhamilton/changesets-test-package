@@ -5,6 +5,11 @@
   "repository": "https://github.com/mitchellhamilton/changesets-test-package",
   "license": "MIT",
   "devDependencies": {
-    "@changesets/cli": "^1.2.0"
+    "@changesets/cli": "^1.2.0",
+    "@octokit/rest": "^16.28.2",
+    "spawndamnit": "^2.0.0"
+  },
+  "scripts": {
+    "release": "changeset release"
   }
 }
