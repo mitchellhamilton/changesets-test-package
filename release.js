@@ -35,6 +35,12 @@ let spawn = (command, args) => {
     `"${ghUsername}@users.noreply.github.com"`
   ]);
   await spawn("git", [
+    "config",
+    "--global",
+    "--unset",
+    "url.ssh://git@github.com.insteadof"
+  ]);
+  await spawn("git", [
     "remote",
     "add",
     "gh-https",
