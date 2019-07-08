@@ -26,7 +26,10 @@ let spawn = (command, args) => {
     );
   }
 
-  fs.writeFileSync("~/.npmrc", "//registry.npmjs.org/:_authToken=${NPM_TOKEN}");
+  fs.writeFileSync(
+    `${process.env.HOME}/.npmrc`,
+    "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
+  );
 
   // await spawn("yarn", ["release"]);
 
