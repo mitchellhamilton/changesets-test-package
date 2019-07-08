@@ -26,6 +26,27 @@ let spawn = (command, args) => {
     );
   }
 
+  console.log("setting git user");
+  await spawn("git", ["config", "--global", "user.name", `"${ghUsername}"`]);
+  await spawn("git", [
+    "config",
+    "--global",
+    "user.email",
+    `"${ghUsername}@users.noreply.github.com"`
+  ]);
+  await spawn("git", [
+    "remote",
+    "set-url",
+    "origin",
+    `https://github.com/${repo}`
+  ]);
+
+  console.log("setting GitHub credentials");
+  fs.writeFileSync(
+    `${process.env.HOME}/.netrc`,
+    `machine github.com\nlogin ${ghUsername}\npassword ${ghAuthToken}`
+  );
+
   let hasChangesets = fs
     .readdirSync(`${process.cwd()}/.changeset`)
     .some(x => x !== "config.js" && x !== "README.md");
@@ -82,19 +103,6 @@ let spawn = (command, args) => {
     await spawn("yarn", ["changeset", "bump"]);
     console.log("adding changes to git");
     await spawn("git", ["add", "."]);
-    console.log("setting git user");
-    await spawn("git", ["config", "--global", "user.name", `"${ghUsername}"`]);
-    await spawn("git", [
-      "config",
-      "--global",
-      "user.email",
-      `"${ghUsername}@users.noreply.github.com"`
-    ]);
-    console.log("setting GitHub credentials");
-    fs.writeFileSync(
-      `${process.env.HOME}/.netrc`,
-      `machine github.com\nlogin ${ghUsername}\npassword ${ghAuthToken}`
-    );
     console.log("committing changes");
     await spawn("git", ["commit", "-m", "Bump Packages"]);
     console.log("pushing to remote");
