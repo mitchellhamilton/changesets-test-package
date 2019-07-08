@@ -26,20 +26,23 @@ let spawn = (command, args) => {
     );
   }
 
-  fs.writeFileSync(
-    `${process.env.HOME}/.npmrc`,
-    "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
-  );
-
-  // await spawn("yarn", ["release"]);
-
-  // await spawn("git", ["push", "--follow-tags"]);
-
   let hasChangesets = fs
     .readdirSync(`${process.cwd()}/.changeset`)
     .some(x => x !== "config.js" && x !== "README.md");
   if (!hasChangesets) {
-    return console.log("No changesets found");
+    console.log(
+      "No changesets found, attempting to publish any unpublished packages to npm"
+    );
+    fs.writeFileSync(
+      `${process.env.HOME}/.npmrc`,
+      "//registry.npmjs.org/:_authToken=${NPM_TOKEN}"
+    );
+
+    // await spawn("yarn", ["release"]);
+
+    // await spawn("git", ["push", "--follow-tags"]);
+
+    return;
   }
 
   let { stdout, stderr } = await spawn("git", [
